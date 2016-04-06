@@ -37,27 +37,28 @@ class MyFrame(wx.Frame):
             filename = openFileDialog.GetPath()
             self.progress()
             pef = pefile.PE(filename)
-            l1 = open('C:\Users\Bhuvan\Desktop\Project\Logs\PE_Header_Sections.txt','w')
+            l1 = open('<filepath of your choice to store the log file .txt extension>','w')
             sys.stdout = l1
             print pef
-            l2 = open('C:\Users\Bhuvan\Desktop\Project\Logs\hexdump.txt','w')
+            l2 = open('<filepath of your choice to store the log file .txt extension>','w')
             sys.stdout = l2
             hexdump(open(filename,'rb'))
             l = open(filename,'rb')
             b = l.read()
-            l3 = open('C:\Users\Bhuvan\Desktop\Project\Logs\hash_value.txt','w') #hash_value
+            l3 = open('<filepath of your choice to store the log file .txt extension>','w') #hash_value
             l3.write(hashlib.md5(b).hexdigest())
             hash = hashlib.md5(b).hexdigest()
-            params = {'apikey': '1a0aa958dee0e50c029b950d89e2bec20ec26bcda5676edf6123b88f2ae3e94b'}
+            #get registered with Virustotal api and get an API key
+            params = {'apikey': '<apikey>'}
             files = {'file': (filename, open(filename, 'r+'))}
             response_up = requests.post('http://www.virustotal.com/vtapi/v2/file/scan', files=files, params=params)
-            params = {'apikey': '1a0aa958dee0e50c029b950d89e2bec20ec26bcda5676edf6123b88f2ae3e94b','resource': hash}
+            params = {'apikey': '<apikey>','resource': hash}
             response_down = requests.get('https://www.virustotal.com/vtapi/v2/file/report', params=params)
             json_response = response_down.json()
-            l4 = open('C:\Users\Bhuvan\Desktop\Project\Logs\VirusTotal_Report.txt','w')
+            l4 = open('<filepath of your choice to store the log file .txt extension>','w')
             sys.stdout = l4
             print json_response
-            if 'True' in open('C:\Users\Bhuvan\Desktop\Project\Logs\VirusTotal_Report.txt','r').read():
+            if 'True' in open('<filepath of your choice to store the log file .txt extension>','r').read():
                 print "\n\nTHE FILE IS A PACKER MALWARE"
             else:
                 print "\n\nThis file needs to be analysed"
@@ -81,7 +82,7 @@ class MyFrame(wx.Frame):
             self.Show()
 
     def OnReport(self,event):
-        os.system("explorer C:\Users\Bhuvan\Desktop\Project\Logs")
+        os.system("explorer <path of dir to store log files>")
 
 
 if __name__ == "__main__":
